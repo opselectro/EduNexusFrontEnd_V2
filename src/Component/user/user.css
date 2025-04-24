@@ -1,0 +1,19 @@
+.card {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .progress-bar {
+    font-weight: bold;
+  }
+  
+  .card-body {
+    display: flex;
+    flex-direction: column;
+  }
+  
