@@ -26,6 +26,7 @@ import TestEditor from "./Component/admin/TestEditor";
 import TestList from "./Component/admin/TestList";
 import TestResults from "./Component/admin/TestResult";
 import AdminContactList from "./Component/admin/AdminContactList";
+import UserDashboardResults from "./Component/user/UserTestResult";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -53,6 +54,8 @@ function App() {
           <Route path="/user/cart" element={<Cart />} />
           <Route path="/user/mycourse" element={<MyCourse />} />
           <Route path="/user/test" element={<UserTest />} />
+          <Route path="user/result" element={<UserDashboardResults></UserDashboardResults>} />
+          
 
           {/* Admin Protected Routes */}
           <Route path="/admin" element={<AdminRoute />}>
