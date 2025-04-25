@@ -42,7 +42,7 @@ const TestEditor = ({ onTestSaved }) => {
     };
 
     try {
-      await axios.post("http://localhost:8080/api/admin/test/add", payload);
+      await axios.post("https://edunexusbackend-v2-production.up.railway.app/api/admin/test/add", payload);
       alert("Test added successfully!");
       resetForm();
       if (onTestSaved) onTestSaved();

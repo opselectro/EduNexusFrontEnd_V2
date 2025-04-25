@@ -40,7 +40,7 @@ function AddCourse({setShowForm}) {
           }
     
           await axios.post(
-            "http://localhost:8080/api/courses/admin/add",
+            "https://edunexusbackend-v2-production.up.railway.app/api/courses/admin/add",
             formData,
             {
               headers: { "Content-Type": "multipart/form-data" },

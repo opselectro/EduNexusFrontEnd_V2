@@ -9,7 +9,7 @@ const TestResults = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/admin/test/getResult");
+        const res = await axios.get("https://edunexusbackend-v2-production.up.railway.app/api/admin/test/getResult");
         setResults(res.data || []);
         setFilteredResults(res.data || []);
       } catch (err) {

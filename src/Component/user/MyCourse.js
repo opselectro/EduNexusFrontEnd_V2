@@ -10,7 +10,7 @@ function MyCourse() {
     const fetchCourses = async () => {
       if (user) {
         try {
-          const response = await axios.get(`http://localhost:8080/api/enrollments/user/${user.id}`);
+          const response = await axios.get(`https://edunexusbackend-v2-production.up.railway.app/api/enrollments/user/${user.id}`);
           setCourses(response.data);
         } catch (error) {
           console.error("Failed to fetch courses:", error);
@@ -33,7 +33,7 @@ function MyCourse() {
             <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
               <div className="card h-100 shadow-sm border-0">
                 <img
-                  src={`http://localhost:8080/api/courses/image/${course.id}`}
+                  src={`https://edunexusbackend-v2-production.up.railway.app/api/courses/image/${course.id}`}
                   className="card-img-top"
                   alt={course.courseName}
                   onError={(e) => (e.target.style.display = 'none')}

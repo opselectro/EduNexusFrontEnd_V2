@@ -38,7 +38,7 @@ function Contact() {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8080/api/contact/user/post",
+        "https://edunexusbackend-v2-production.up.railway.app/api/contact/user/post",
         dataWithTimestamp,
         {
           headers: { "content-type": "application/json" },

@@ -9,7 +9,7 @@ const AdminManageTests = () => {
 
   const fetchTests = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/users/test/getTest");
+      const res = await axios.get("https://edunexusbackend-v2-production.up.railway.app/api/users/test/getTest");
       setTests(res.data || []);
       setFilteredTests(res.data || []);
     } catch (err) {
@@ -34,7 +34,7 @@ const AdminManageTests = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this test?")) return;
     try {
-      await axios.delete(`http://localhost:8080/api/admin/test/delete/${id}`);
+      await axios.delete(`https://edunexusbackend-v2-production.up.railway.app/api/admin/test/delete/${id}`);
     
       setTests(tests.filter(test => test.id !== id));
       setFilteredTests(filteredTests.filter(test => test.id !== id));

@@ -24,7 +24,7 @@ const AdminDashboard = () => {
   // Fetch enrollment stats from the backend
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/enrollments/admin/enrollment/stats")
+      .get("https://edunexusbackend-v2-production.up.railway.app/api/enrollments/admin/enrollment/stats")
       .then((response) => {
         setEnrollmentData([
           { name: "Enrolled", value: response.data.enrolledCount},

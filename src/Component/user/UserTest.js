@@ -20,7 +20,7 @@ const UserTest = () => {
 
   const fetchAllTests = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/users/test/getTest');
+      const res = await axios.get('https://edunexusbackend-v2-production.up.railway.app/api/users/test/getTest');
       setTests(res.data || []);
     } catch (err) {
       console.error('Error fetching tests:', err);
@@ -51,7 +51,7 @@ const UserTest = () => {
     };
 
     try {
-      const res = await axios.post(`http://localhost:8080/api/users/test/submit`, payload);
+      const res = await axios.post(`https://edunexusbackend-v2-production.up.railway.app/api/users/test/submit`, payload);
       setResult(res.data);
       setShowResultPopup(true);
     } catch (err) {

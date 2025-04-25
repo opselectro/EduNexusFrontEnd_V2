@@ -21,7 +21,7 @@ function AdminContactList() {
 
   const fetchContactMessage = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/contact/admin/get");
+      const response = await axios.get("https://edunexusbackend-v2-production.up.railway.app/api/contact/admin/get");
       setContacts(response.data);
     } catch (error) {
       alert("Failed to fetch the messages.");

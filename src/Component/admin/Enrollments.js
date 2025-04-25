@@ -21,7 +21,7 @@ function Enrollments() {
 
   const fetchEnrollments = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/enrollments/admin/viewAllEnroll");
+      const response = await axios.get("https://edunexusbackend-v2-production.up.railway.app/api/enrollments/admin/viewAllEnroll");
       setEnrollments(response.data);
     } catch (error) {
       console.error("Error fetching enrollments:", error);
@@ -31,7 +31,7 @@ function Enrollments() {
 
   const cancelEnrollment = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/enrollments/admin/cancel/${id}`);
+      await axios.delete(`https://edunexusbackend-v2-production.up.railway.app/api/enrollments/admin/cancel/${id}`);
       alert("Enrollment cancelled successfully.");
       fetchEnrollments();
     } catch (error) {

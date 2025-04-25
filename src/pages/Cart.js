@@ -24,7 +24,7 @@ function Cart() {
         try {
             for(const course of cartItems)
             {
-                await axios.post("http://localhost:8080/api/enrollments/enroll",{
+                await axios.post("https://edunexusbackend-v2-production.up.railway.app/api/enrollments/enroll",{
                     userId:user.id,
                     courseId:course.id
                 },{withCredentials:true});

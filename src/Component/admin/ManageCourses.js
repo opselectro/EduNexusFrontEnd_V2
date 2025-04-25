@@ -35,7 +35,7 @@ const ManageCourse = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/courses/viewAll");
+      const response = await axios.get("https://edunexusbackend-v2-production.up.railway.app/api/courses/viewAll");
       setCourses(response.data);
       setTotalPages(Math.ceil(response.data.length / coursesPerPage));
     } catch (error) {
@@ -48,7 +48,7 @@ const ManageCourse = () => {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/courses/search?courseName=${searchTerm}`
+        `https://edunexusbackend-v2-production.up.railway.app/api/courses/search?courseName=${searchTerm}`
       );
       setCourses(response.data);
       setCurrentPage(1);
@@ -85,7 +85,7 @@ const ManageCourse = () => {
       if (image) formData.append("imageFile", image);
 
       await axios.put(
-        `http://localhost:8080/api/courses/admin/update/${editingCourse.id}`,
+        `https://edunexusbackend-v2-production.up.railway.app/api/courses/admin/update/${editingCourse.id}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -114,7 +114,7 @@ const ManageCourse = () => {
               <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={index}>
                 <div className="card h-100 shadow-sm">
                   <img
-                    src={`http://localhost:8080/api/courses/image/${course.id}`}
+                    src={`https://edunexusbackend-v2-production.up.railway.app/api/courses/image/${course.id}`}
                     className="card-img-top"
                     alt={course.courseName}
                     onError={(e) => (e.target.style.display = "none")}

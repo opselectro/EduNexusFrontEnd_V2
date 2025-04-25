@@ -23,7 +23,7 @@ const Course = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/courses/viewAll");
+      const res = await axios.get("https://edunexusbackend-v2-production.up.railway.app/api/courses/viewAll");
       setCourses(res.data);
     } catch (error) {
       console.error("Fetch error:", error);
@@ -39,7 +39,7 @@ const Course = () => {
       // Otherwise, search for courses
       try {
         const res = await axios.get(
-          `http://localhost:8080/api/courses/search?courseName=${searchTerm}`
+          `https://edunexusbackend-v2-production.up.railway.app/api/courses/search?courseName=${searchTerm}`
         );
         setCourses(res.data);
       } catch (error) {
@@ -127,7 +127,7 @@ const Course = () => {
               <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
                 <div className="card h-100 shadow d-flex flex-column">
                   <img
-                    src={`http://localhost:8080/api/courses/image/${course.id}`}
+                    src={`https://edunexusbackend-v2-production.up.railway.app/api/courses/image/${course.id}`}
                     className="card-img-top"
                     alt={course.courseName}
                     onError={(e) => (e.target.style.display = "none")}

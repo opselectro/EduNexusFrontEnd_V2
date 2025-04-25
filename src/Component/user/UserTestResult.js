@@ -12,7 +12,7 @@ const UserDashboardResults = () => {
       if (!user || !user.username) return;
 
       try {
-        const res = await axios.get(`http://localhost:8080/api/users/results/${user.username}`);
+        const res = await axios.get(`https://edunexusbackend-v2-production.up.railway.app/api/users/results/${user.username}`);
         setResults(res.data || []);
       } catch (err) {
         console.error("Failed to fetch user test results", err);

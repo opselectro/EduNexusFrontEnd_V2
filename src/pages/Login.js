@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/users/login",
+        "https://edunexusbackend-v2-production.up.railway.app/api/users/login",
         credentials,
         { headers: { "Content-Type": "application/json" } }
       );

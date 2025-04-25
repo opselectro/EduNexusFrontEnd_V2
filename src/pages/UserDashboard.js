@@ -29,7 +29,7 @@ const UserDashboard = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/courses/viewAll");
+      const response = await axios.get("https://edunexusbackend-v2-production.up.railway.app/api/courses/viewAll");
       setCourses(response.data);
       setFilteredCourses(response.data);
     } catch (error) {
@@ -45,7 +45,7 @@ const UserDashboard = () => {
     }
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/courses/search?courseName=${searchTerm}`
+        `https://edunexusbackend-v2-production.up.railway.app//api/courses/search?courseName=${searchTerm}`
       );
       setFilteredCourses(response.data);
       setCurrentPage(1); // reset to first page on new search
@@ -134,7 +134,7 @@ const UserDashboard = () => {
               <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex">
                 <div className="card h-100 shadow-lg d-flex flex-column">
                   <img
-                    src={`http://localhost:8080/api/courses/image/${course.id}`}
+                    src={`https://edunexusbackend-v2-production.up.railway.app/api/courses/image/${course.id}`}
                     className="card-img-top"
                     alt={course.courseName}
                     onError={(e) => (e.target.style.display = "none")}
