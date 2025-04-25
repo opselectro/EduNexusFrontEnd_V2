@@ -73,7 +73,7 @@ const RegisterForm = () => {
     }
 
     try {
-      const response = await axios.post("https://edunexusbackend-v2-production.up.railway.app//api/users/register", user);
+      const response = await axios.post("https://edunexusbackend-v2-production.up.railway.app/api/users/register", user);
       alert(response.data);
       navigate("/home");
     } catch (err) {
