@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "edunexusbackend-v2-production.up.railway.app", 
+  baseURL: "https://edunexusbackend-v2-production.up.railway.app", 
   withCredentials: true,  
 });
 

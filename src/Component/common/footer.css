@@ -1,87 +1,102 @@
 .footer-container {
-    background-color: #333;
-    color: white;
-    padding: 40px 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  .footer-section {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .footer-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 30px;  /* Space between columns */
-  }
-  
+  background-color: #333;
+  color: white;
+  padding: 40px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.footer-section {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.footer-column {
+  flex: 1;
+  min-width: 250px;
+  max-width: 300px;
+}
+
+.footer-heading {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #fff;
+  border-bottom: 1px solid #666;
+  padding-bottom: 5px;
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-list li {
+  margin: 10px 0;
+}
+
+.footer-list li a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 14px;
+  display: inline-block;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.footer-list li a:hover,
+.footer-list li a:focus {
+  color: #fff;
+  transform: translateX(4px);
+  outline: none;
+}
+
+.footer-list li a:active {
+  color: #f0c040;
+}
+
+/* Responsive Breakpoints */
+
+@media (max-width: 1200px) {
   .footer-column {
-    flex: 1;
-    min-width: 250px;  /* Minimum width for each column */
-    max-width: 300px;  /* Maximum width for each column */
+    flex: 1 1 45%;
+    max-width: 45%;
   }
-  
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    gap: 20px;
+  }
+
+  .footer-column {
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
   .footer-heading {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #fff;
+    font-size: 16px;
   }
-  
-  .footer-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .footer-list li {
-    margin: 10px 0;
-  }
-  
+
   .footer-list li a {
-    color: #ccc;
-    text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
   }
-  
-  .footer-list li a:hover {
-    color: #fff;
+}
+
+@media (max-width: 480px) {
+  .footer-heading {
+    font-size: 15px;
   }
-  
-  @media (max-width: 1200px) {
-    /* When screen size is smaller than 1200px, the footer columns adjust to fit the screen */
-    .footer-column {
-      flex: 1 1 45%;
-      max-width: 45%;  /* Ensure columns are spaced evenly */
-    }
+
+  .footer-list li a {
+    font-size: 12px;
+    padding: 4px 0;
   }
-  
-  @media (max-width: 768px) {
-    /* When screen size is smaller than 768px, the footer columns stack vertically */
-    .footer-column {
-      flex: 1 1 100%;
-      max-width: 100%;
-      margin-bottom: 20px;  /* Add space between stacked columns */
-    }
-  
-    .footer-heading {
-      font-size: 16px;  /* Adjust heading size for smaller screens */
-    }
-  
-    .footer-list li a {
-      font-size: 13px;  /* Adjust link size for smaller screens */
-    }
-  }
-  
-  @media (max-width: 480px) {
-    /* When screen size is extremely small (mobile devices), further tweak font sizes */
-    .footer-heading {
-      font-size: 14px;  /* Smaller heading font */
-    }
-  
-    .footer-list li a {
-      font-size: 12px;  /* Smaller font for links */
-    }
-  }
-  
+}
