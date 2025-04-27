@@ -37,9 +37,10 @@ const ManageCourse = () => {
     try {
       const response = await axios.get("https://edunexusbackend-v2-production.up.railway.app/api/courses/viewAll");
       setCourses(response.data);
-      setTotalPages(Math.ceil(response.data.length / coursesPerPage));
+      const newTotalPages = Math.ceil(response.data.length / coursesPerPage);
+      setTotalPages(newTotalPages);
     } catch (error) {
-      console.error("Error fetching courses:", error);
+      alert("Error fetching courses. Please try again later.");
     }
   };
 
@@ -54,7 +55,7 @@ const ManageCourse = () => {
       setCurrentPage(1);
       setTotalPages(Math.ceil(response.data.length / coursesPerPage));
     } catch (error) {
-      console.error("Error searching courses:", error);
+      alert("Error searching courses. Please try again later.");
     }
   };
 
@@ -74,6 +75,10 @@ const ManageCourse = () => {
       const { courseName, description, price, duration } = newCourse;
       if (!courseName || !description || !price || !duration) {
         alert("All fields are required");
+        return;
+      }
+      if (isNaN(price) || price <= 0) {
+        alert("Please enter a valid price.");
         return;
       }
 
@@ -97,7 +102,7 @@ const ManageCourse = () => {
       setEditingCourse(null);
       fetchCourses();
     } catch (error) {
-      console.error("Error updating course:", error);
+      alert("Error updating course. Please try again later.");
     }
   };
 
@@ -128,7 +133,11 @@ const ManageCourse = () => {
                     <p className="text-muted text-center mt-2">Duration: {course.duration}</p>
                     <div className="d-flex justify-content-between align-items-center">
                       <span className="badge bg-primary fs-6">₹{course.price}</span>
-                      <button className="btn btn-outline-primary btn-sm" onClick={() => handleEdit(course)}>
+                      <button
+                        className="btn btn-outline-primary btn-sm"
+                        onClick={() => handleEdit(course)}
+                        aria-label={`Edit ${course.courseName}`}
+                      >
                         Edit
                       </button>
                     </div>

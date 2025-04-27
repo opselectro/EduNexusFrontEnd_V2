@@ -5,15 +5,29 @@ import axios from 'axios';
 function MyCourse() {
   const { user } = useContext(AuthContext);
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state for spinner
 
   useEffect(() => {
     const fetchCourses = async () => {
       if (user) {
-        try {
-          const response = await axios.get(`https://edunexusbackend-v2-production.up.railway.app/api/enrollments/user/${user.id}`);
-          setCourses(response.data);
-        } catch (error) {
-          console.error("Failed to fetch courses:", error);
+        
+        const cachedCourses = localStorage.getItem(`courses_${user.id}`);
+        const cachedTimestamp = localStorage.getItem(`coursesTimestamp_${user.id}`);
+        const cacheValidity = 1000 * 60 * 10; // 10 minutes validity
+
+        if (cachedCourses && cachedTimestamp && (Date.now() - cachedTimestamp) < cacheValidity) {
+          setCourses(JSON.parse(cachedCourses)); 
+          setLoading(false); 
+          try {
+            const response = await axios.get(`https://edunexusbackend-v2-production.up.railway.app/api/enrollments/user/${user.id}`);
+            setCourses(response.data);
+            localStorage.setItem(`courses_${user.id}`, JSON.stringify(response.data)); // Cache courses in localStorage
+            localStorage.setItem(`coursesTimestamp_${user.id}`, Date.now()); // Store timestamp
+            setLoading(false);
+          } catch (error) {
+            console.error("Failed to fetch courses:", error);
+            setLoading(false); 
+          }
         }
       }
     };
@@ -25,7 +39,13 @@ function MyCourse() {
     <div className="container mt-5 mb-5">
       <h3 className="mb-4 text-center fw-bold text-primary">My Enrolled Courses</h3>
 
-      {courses.length === 0 ? (
+      {loading ? (
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : courses.length === 0 ? (
         <p className="text-center text-muted">You haven't enrolled in any courses yet.</p>
       ) : (
         <div className="row">

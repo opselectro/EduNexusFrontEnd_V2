@@ -28,29 +28,36 @@ const UserDashboard = () => {
   }, [user, navigate, loading]);
 
   const fetchCourses = async () => {
-    try {
-      const response = await axios.get("https://edunexusbackend-v2-production.up.railway.app/api/courses/viewAll");
-      setCourses(response.data);
-      setFilteredCourses(response.data);
-    } catch (error) {
-      console.error("Error fetching courses:", error.message);
+    // Check if courses are already cached in localStorage
+    const cachedCourses = localStorage.getItem("courses");
+    if (cachedCourses) {
+      setCourses(JSON.parse(cachedCourses));
+      setFilteredCourses(JSON.parse(cachedCourses));
+    } else {
+      try {
+        const response = await axios.get("https://edunexusbackend-v2-production.up.railway.app/api/courses/viewAll");
+        setCourses(response.data);
+        setFilteredCourses(response.data);
+        localStorage.setItem("courses", JSON.stringify(response.data)); // Cache the courses in localStorage
+      } catch (error) {
+        console.error("Error fetching courses:", error.message);
+      }
     }
   };
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     if (!searchTerm) {
-      setFilteredCourses(courses);
-      return;
-    }
-    try {
-      const response = await axios.get(
-        `https://edunexusbackend-v2-production.up.railway.app//api/courses/search?courseName=${searchTerm}`
+      setFilteredCourses(courses); // Reset to all courses if search term is empty
+    } else {
+      // Filter courses based on search term (courseName, description, price)
+      const filtered = courses.filter(course =>
+        course.courseName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        course.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        course.price.toString().includes(searchTerm) // Including price search
       );
-      setFilteredCourses(response.data);
-      setCurrentPage(1); // reset to first page on new search
-    } catch (error) {
-      console.error("Error searching courses:", error);
+      setFilteredCourses(filtered);
+      setCurrentPage(1); // Reset to first page when searching
     }
   };
 
@@ -115,7 +122,7 @@ const UserDashboard = () => {
             <input
               type="text"
               className="form-control"
-              placeholder="Search courses by name..."
+              placeholder="Search courses by name, description, or price..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
