@@ -4,47 +4,63 @@ import Navbar from "../Component/common/NavBar";
 
 const Course = () => {
   const [courses, setCourses] = useState([]);
+  const [filteredCourses, setFilteredCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [CoursePerPages] = useState(3);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);  // Loading state for spinner
 
   const indexOfLast = currentPage * CoursePerPages;
   const indexOfFirst = indexOfLast - CoursePerPages;
-  const currentCourses = courses.slice(indexOfFirst, indexOfLast);
+  const currentCourses = filteredCourses.slice(indexOfFirst, indexOfLast);
 
   useEffect(() => {
-    fetchCourses();
+    const cachedCourses = localStorage.getItem("courses");
+    const cachedTimestamp = localStorage.getItem("coursesTimestamp");
+    const cacheValidity = 1000 * 60 * 10; // 10 minutes validity (can be adjusted)
+
+    if (cachedCourses && cachedTimestamp && (Date.now() - cachedTimestamp) < cacheValidity) {
+      setCourses(JSON.parse(cachedCourses)); // Load from cache
+      setFilteredCourses(JSON.parse(cachedCourses)); // Also filter with the same data
+      setLoading(false);
+    } else {
+      fetchCourses(); // Fetch from server if no valid cache
+    }
   }, []);
 
   useEffect(() => {
-    setTotalPages(Math.ceil(courses.length / CoursePerPages));
-  }, [courses, CoursePerPages]);
+    setTotalPages(Math.ceil(filteredCourses.length / CoursePerPages));
+  }, [filteredCourses, CoursePerPages]);
 
   const fetchCourses = async () => {
     try {
+      setLoading(true);  // Start loading spinner
       const res = await axios.get("https://edunexusbackend-v2-production.up.railway.app/api/courses/viewAll");
       setCourses(res.data);
+      setFilteredCourses(res.data); // Store the full courses list for searching
+      localStorage.setItem("courses", JSON.stringify(res.data)); // Cache in localStorage
+      localStorage.setItem("coursesTimestamp", Date.now()); // Store timestamp for cache expiry
+      setLoading(false);  // End loading spinner
     } catch (error) {
       console.error("Fetch error:", error);
+      setLoading(false);  // End loading spinner
     }
   };
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     if (!searchTerm) {
-      // If no search term, show all courses
-      fetchCourses();
+      setFilteredCourses(courses); // If no search term, reset the filter
     } else {
-      // Otherwise, search for courses
-      try {
-        const res = await axios.get(
-          `https://edunexusbackend-v2-production.up.railway.app/api/courses/search?courseName=${searchTerm}`
-        );
-        setCourses(res.data);
-      } catch (error) {
-        console.error("Search error:", error);
-      }
+      // Filter the courses based on courseName, description, and price
+      const lowercasedSearchTerm = searchTerm.toLowerCase();
+      const filtered = courses.filter(course => 
+        course.courseName.toLowerCase().includes(lowercasedSearchTerm) ||
+        course.description.toLowerCase().includes(lowercasedSearchTerm) ||
+        course.price.toString().includes(lowercasedSearchTerm)
+      );
+      setFilteredCourses(filtered);
     }
   };
 
@@ -120,47 +136,55 @@ const Course = () => {
 
         <hr />
 
-        {/* Course Cards */}
-        <div className="row" style={{ minHeight: "500px" }}>
-          {currentCourses.length > 0 ? (
-            currentCourses.map((course, index) => (
-              <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
-                <div className="card h-100 shadow d-flex flex-column">
-                  <img
-                    src={`https://edunexusbackend-v2-production.up.railway.app/api/courses/image/${course.id}`}
-                    className="card-img-top"
-                    alt={course.courseName}
-                    onError={(e) => (e.target.style.display = "none")}
-                    style={{ height: "200px", objectFit: "cover" }}
-                  />
-                  <div className="card-body d-flex flex-column">
-                    <h5 className="card-title text-center fw-bold text-primary">
-                      {course.courseName}
-                    </h5>
-                    <p className="card-text flex-grow-1" style={{ minHeight: "100px" }}>
-                      {course.description}
-                    </p>
-                    <div className="mt-auto">
-                      <p className="text-muted text-center">
-                        <i className="bi bi-clock"></i> Duration: {course.duration}
+        {/* Loading Indicator */}
+        {loading ? (
+          <div className="text-center">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <div className="row" style={{ minHeight: "500px" }}>
+            {currentCourses.length > 0 ? (
+              currentCourses.map((course, index) => (
+                <div key={index} className="col-lg-4 col-md-6 col-sm-12 mb-4">
+                  <div className="card h-100 shadow d-flex flex-column">
+                    <img
+                      src={`https://edunexusbackend-v2-production.up.railway.app/api/courses/image/${course.id}`}
+                      className="card-img-top"
+                      alt={course.courseName}
+                      onError={(e) => (e.target.style.display = "none")}
+                      style={{ height: "200px", objectFit: "cover" }}
+                    />
+                    <div className="card-body d-flex flex-column">
+                      <h5 className="card-title text-center fw-bold text-primary">
+                        {course.courseName}
+                      </h5>
+                      <p className="card-text flex-grow-1" style={{ minHeight: "100px" }}>
+                        {course.description}
                       </p>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <span className="badge bg-primary fs-6">
-                          ₹{course.price}
-                        </span>
-                        <button className="btn btn-outline-primary btn-sm">More Info</button>
+                      <div className="mt-auto">
+                        <p className="text-muted text-center">
+                          <i className="bi bi-clock"></i> Duration: {course.duration}
+                        </p>
+                        <div className="d-flex justify-content-between align-items-center">
+                          <span className="badge bg-primary fs-6">
+                            ₹{course.price}
+                          </span>
+                          <button className="btn btn-outline-primary btn-sm">More Info</button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className="col-12 text-center">
+                <div className="alert alert-info fs-5">No courses available at the moment.</div>
               </div>
-            ))
-          ) : (
-            <div className="col-12 text-center">
-              <div className="alert alert-info fs-5">No courses available at the moment.</div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
         {/* Pagination */}
         {totalPages > 1 && (
@@ -176,9 +200,7 @@ const Course = () => {
             {[...Array(totalPages)].map((_, i) => (
               <button
                 key={i}
-                className={`btn ${
-                  currentPage === i + 1 ? "btn-primary" : "btn-outline-primary"
-                }`}
+                className={`btn ${currentPage === i + 1 ? "btn-primary" : "btn-outline-primary"}`}
                 onClick={() => handlePageChange(i + 1)}
               >
                 {i + 1}
